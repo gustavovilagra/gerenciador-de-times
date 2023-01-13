@@ -1,4 +1,4 @@
-package br.com.fuctura.exception.handler;
+package br.com.fuctura.exceptionHandler;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import br.com.fuctura.dto.ErroNaApiDTO;
+import br.com.fuctura.dto.jogador.ErroNaApiDTO;
 import br.com.fuctura.exception.IdadeInvalidoException;
 import br.com.fuctura.exception.NomeInvalidoException;
 import br.com.fuctura.exception.PesoInvalidoException;

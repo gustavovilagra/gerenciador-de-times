@@ -9,10 +9,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import br.com.fuctura.dto.JogadorDTOInterface;
-import br.com.fuctura.dto.JogadorDTOView;
 
-import br.com.fuctura.dto.JogadorJPQLDTO;
+import br.com.fuctura.dto.jogador.JogadorDTOInterface;
+import br.com.fuctura.dto.jogador.JogadorDTOView;
+import br.com.fuctura.dto.jogador.JogadorJPQLDTO;
 import br.com.fuctura.entities.Jogador;
 @Repository
 public interface JogadorRepository extends JpaRepository<Jogador, Long> {

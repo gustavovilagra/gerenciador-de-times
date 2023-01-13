@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import br.com.fuctura.config.ApplicationConfig;
-import br.com.fuctura.dto.IMCJogadorDTO;
-import br.com.fuctura.dto.IMCrequerimentoDTO;
+import br.com.fuctura.dto.jogador.IMCJogadorDTO;
+import br.com.fuctura.dto.jogador.IMCrequerimentoDTO;
 
 
 @Service

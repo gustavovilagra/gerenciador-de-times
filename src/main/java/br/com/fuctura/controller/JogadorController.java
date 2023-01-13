@@ -1,5 +1,5 @@
 
-package br.com.fuctura.entities.controller;
+package br.com.fuctura.controller;
 
 
 import java.util.ArrayList;
@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import br.com.fuctura.dto.JogadorDTO;
-import br.com.fuctura.dto.JogadorDTOInterface;
-import br.com.fuctura.dto.JogadorDTOView;
-import br.com.fuctura.dto.JogadorJPQLDTO;
 
+import br.com.fuctura.dto.jogador.JogadorDTO;
+import br.com.fuctura.dto.jogador.JogadorDTOInterface;
+import br.com.fuctura.dto.jogador.JogadorDTOView;
+import br.com.fuctura.dto.jogador.JogadorJPQLDTO;
 import br.com.fuctura.exception.ObjectExistsException;
 import br.com.fuctura.exception.ObjectNotFoundException;
 import br.com.fuctura.exception.RequiredParamException;

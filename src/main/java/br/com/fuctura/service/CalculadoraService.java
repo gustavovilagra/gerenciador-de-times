@@ -2,8 +2,8 @@ package br.com.fuctura.service;
 
 import org.springframework.stereotype.Service;
 
-import br.com.fuctura.dto.IMCJogadorDTO;
-import br.com.fuctura.dto.IMCrequerimentoDTO;
+import br.com.fuctura.dto.jogador.IMCJogadorDTO;
+import br.com.fuctura.dto.jogador.IMCrequerimentoDTO;
 @Service
 public interface CalculadoraService {
 	

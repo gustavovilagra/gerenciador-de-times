@@ -1,4 +1,4 @@
-package br.com.fuctura.dto;
+package br.com.fuctura.dto.jogador;
 
 public interface JogadorDTOView {//projecoes JPA //interface fechada
 	

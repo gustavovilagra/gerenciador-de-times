@@ -1,4 +1,4 @@
-package br.com.fuctura.dto;
+package br.com.fuctura.dto.jogador;
 
 import lombok.Getter;
 import lombok.Setter;

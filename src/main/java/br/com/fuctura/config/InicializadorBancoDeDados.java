@@ -7,8 +7,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import br.com.fuctura.dto.IMCJogadorDTO;
-import br.com.fuctura.dto.IMCrequerimentoDTO;
+import br.com.fuctura.dto.jogador.IMCJogadorDTO;
+import br.com.fuctura.dto.jogador.IMCrequerimentoDTO;
 import br.com.fuctura.entities.Jogador;
 import br.com.fuctura.entities.Tecnico;
 import br.com.fuctura.entities.Time;

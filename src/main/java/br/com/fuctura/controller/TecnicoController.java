@@ -1,4 +1,4 @@
-package br.com.fuctura.entities.controller;
+package br.com.fuctura.controller;
 
 import java.util.List;
 

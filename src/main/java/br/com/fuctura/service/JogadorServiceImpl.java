@@ -9,11 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import br.com.fuctura.dto.IMCrequerimentoDTO;
-import br.com.fuctura.dto.JogadorDTO;
-import br.com.fuctura.dto.JogadorDTOInterface;
-import br.com.fuctura.dto.JogadorDTOView;
-import br.com.fuctura.dto.JogadorJPQLDTO;
+
+import br.com.fuctura.dto.jogador.IMCrequerimentoDTO;
+import br.com.fuctura.dto.jogador.JogadorDTO;
+import br.com.fuctura.dto.jogador.JogadorDTOInterface;
+import br.com.fuctura.dto.jogador.JogadorDTOView;
+import br.com.fuctura.dto.jogador.JogadorJPQLDTO;
 import br.com.fuctura.entities.Jogador;
 import br.com.fuctura.exception.IdadeInvalidoException;
 import br.com.fuctura.exception.NomeInvalidoException;
