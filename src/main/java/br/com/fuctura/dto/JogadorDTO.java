@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class JogadorDTO {
-	
+	private Long id;
 	private String nome;
 	private int idade;
 	private Double peso;

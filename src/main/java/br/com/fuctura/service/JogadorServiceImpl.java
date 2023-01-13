@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import br.com.fuctura.dto.IMCrequerimentoDTO;
 import br.com.fuctura.dto.JogadorDTO;
 import br.com.fuctura.dto.JogadorDTOInterface;
@@ -18,7 +17,10 @@ import br.com.fuctura.dto.JogadorJPQLDTO;
 import br.com.fuctura.entities.Jogador;
 import br.com.fuctura.exception.IdadeInvalidoException;
 import br.com.fuctura.exception.NomeInvalidoException;
+import br.com.fuctura.exception.ObjectExistsException;
+import br.com.fuctura.exception.ObjectNotFoundException;
 import br.com.fuctura.exception.PesoInvalidoException;
+import br.com.fuctura.exception.RequiredParamException;
 import br.com.fuctura.repository.JogadorRepository;
 
 
@@ -40,9 +42,11 @@ public class JogadorServiceImpl implements JogadorService {
 		return number.matches("[-+]?[0-9]*\\.?[0-9]+");
 	}
 	
+	
+	
 	@Override
 	//mapper manual
-	public void salvar(JogadorDTO j) {
+	public void generateJogador(JogadorDTO j) throws ObjectExistsException {
 		
 		var req=IMCrequerimentoDTO.builder()
 				.peso(j.getPeso())
@@ -59,7 +63,6 @@ public class JogadorServiceImpl implements JogadorService {
 		jogador.setImc(respo.getImc());
 		jogador.setTime(j.getTime());
 		
-
 		if(jogador.getImc()>=30) {
 			jogador.setMensagem("jogador com obesidade");
 		}
@@ -84,12 +87,17 @@ public class JogadorServiceImpl implements JogadorService {
 		if(jogador.getIdade()<=0||jogador.getIdade()>150) {
 			throw new IdadeInvalidoException();
 		}
+		if(this.isExists(jogador)) {
+			throw new ObjectExistsException("jogador ya existe");
+		}
+
 		
-	repo.save(jogador);
-	
-	LOGGER.info("jogador criado com sucesso");
+		LOGGER.info("jogador criado com sucesso");
+		 repo.save(jogador);
+		
 	
 	}
+	
 
 	@Override
 	public List<JogadorDTOView> listarNomeImc() {
@@ -108,21 +116,30 @@ public class JogadorServiceImpl implements JogadorService {
 
 	@Override
 	public void deletarUsuario(String nome) {
+		if(this.isNumeric(nome)) {
+			throw new NomeInvalidoException();
+		}
 		LOGGER.info("jogador deletado com sucesso");
 		repo.deleteAll(repo.findJogadorsByNome(nome));
 		
 	}
 
 	@Override
-	public List<JogadorJPQLDTO> listarImcNome(Double min, Double max) {
+	public List<JogadorJPQLDTO> listarMinMax(Double min, Double max) {
+		if(min>max||min==null||max==null) {
+			throw new PesoInvalidoException();
+		}
 		LOGGER.info("jogadores com seus imc do peso encontrados");
 		return repo.listarComJPQL(min,max);
 	}
 
 	@Override
-	public void update(JogadorDTO j, String nome) {
+	public void update(JogadorDTO j, Long id) throws ObjectNotFoundException  {
 		
-		Optional<Jogador>jogador=repo.findJogadorByNome(nome);
+		Optional<Jogador>jogador=repo.findById(id);
+		if(jogador.isEmpty()) {
+			throw new ObjectNotFoundException("jogador no encontrado ");
+		}
 
 		var req=IMCrequerimentoDTO.builder()
 				.peso(j.getPeso())
@@ -166,11 +183,32 @@ public class JogadorServiceImpl implements JogadorService {
 			throw new IdadeInvalidoException();
 		}
 		
-
-		repo.save(jog);
+		this.repo.save(jog);
 		
 		LOGGER.info("jogador atualizado com sucesso");
 		
+	}
+	@Override
+	public void checkJogador(JogadorDTO j) throws RequiredParamException{
+		
+		if(null==j.getNome()) {
+			throw new RequiredParamException("precisa colocar o nome do jogador");
+		}
+		if(j.getIdade()==0) {
+			throw new RequiredParamException("precisa colcar a idade do jogador");
+		}
+		if(null==j.getAltura()) {
+			throw new RequiredParamException("precisa colocar a altura do jogador");
+		}
+		if(null==j.getPeso()) {
+			throw new RequiredParamException("precisa colocar o peso do jogador");
+		}
+		
+	}
+	@Override
+	public boolean isExists(Jogador j) {
+		
+	return !this.repo.findJogadorByNome(j.getNome()).isEmpty();
 	}
 
 	
