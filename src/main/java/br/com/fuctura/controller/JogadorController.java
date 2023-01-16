@@ -55,7 +55,7 @@ public class JogadorController {
 	
 	@PostMapping(produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<JogadorDTO>  store(
-			@Valid @RequestBody  @ApiParam(value = "Objeto a ser criado", required=true) JogadorDTO dto) {
+			@Valid @RequestBody  @ApiParam(value = "Objeto a ser criado id,imc e mensagem podem ser ignorado ", required=true) JogadorDTO dto) {
 		
 		
 		try {
@@ -92,7 +92,7 @@ public class JogadorController {
 			@ApiResponse(code=400,message="petiçao incorreta")
 	})
 	@GetMapping(value="/{min}/{max}",produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity <List<JogadorJPQLDTO>> jogadorJPQL(@PathVariable  @ApiParam(value = "peso minimo", required=true) Double min,
+	public @ResponseBody ResponseEntity <List<JogadorJPQLDTO>> indexJPQL(@PathVariable  @ApiParam(value = "peso minimo", required=true) Double min,
 			@PathVariable  @ApiParam(value = "peso maximo", required=true) Double max){
 			
 			List<JogadorJPQLDTO> resultado=this.service.listarMinMax(min, max);
@@ -148,7 +148,7 @@ public class JogadorController {
 	@PutMapping(value="/{id}",produces =MediaType.APPLICATION_JSON_VALUE )
 	public @ResponseBody ResponseEntity<JogadorDTO> update(
 			@PathVariable @ApiParam(value="id do jogador",required=true) Long id,
-			@RequestBody @ApiParam(value="Objeto a ser atualizado", required=true) JogadorDTO jogador) {
+			@RequestBody @ApiParam(value="Objeto a ser atualizado imc e mensagem podem ser ignorados", required=true) JogadorDTO jogador) {
 		
 		if(null==id || jogador.getId() !=id) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jogador);

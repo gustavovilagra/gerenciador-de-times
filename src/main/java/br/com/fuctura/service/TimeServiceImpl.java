@@ -6,10 +6,14 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import br.com.fuctura.dto.time.TimeDTO;
 import br.com.fuctura.dto.time.TimeDTOInterface;
 import br.com.fuctura.dto.time.TimeDTOInterface2;
 import br.com.fuctura.dto.time.TimeDTONome;
 import br.com.fuctura.entities.Time;
+import br.com.fuctura.exception.ObjectExistsException;
+import br.com.fuctura.exception.ObjectNotFoundException;
 import br.com.fuctura.repository.TimeRepository;
 
 
@@ -28,11 +32,16 @@ public class TimeServiceImpl implements TimeService{
 	}
 
 	@Override
-	public void salvar(TimeDTONome time) {
-		Time t=new Time();
-		t.setNome(time.getNome());
+	public void salvar(TimeDTONome time) throws ObjectExistsException {
 		
-		timeRepo.save(t);
+		Time newTime=new Time();
+		newTime.setNome(time.getNome());
+		
+		if(this.isExists(newTime.getNome())) {
+			throw new ObjectExistsException("o time ja existe");
+		}
+		
+		this.timeRepo.save(newTime);
 		
 	}
 
@@ -54,14 +63,21 @@ public class TimeServiceImpl implements TimeService{
 	}
 
 	@Override
-	public void update(TimeDTONome t,String nome) {
-		Optional<Time> time=timeRepo.findTimeByNome(nome);
-		Time tim=time.get();
-		tim.setNome(t.getNome());
-		
-		timeRepo.save(tim);
-		
+	public void update(TimeDTONome t,Long id) throws ObjectNotFoundException {
+		Optional<Time> time=this.timeRepo.findById(id);
+		if(time.isEmpty()) {
+			throw new ObjectNotFoundException("objeto vacio");
 		}
+		time.get().setNome(t.getNome());
+		
+		this.timeRepo.save(time.get());
+		
+	}
+	
+	public boolean isExists(String nome) {
+		return !this.timeRepo.findByNome(nome).isEmpty();
+	}
+		
 	
 
 }
