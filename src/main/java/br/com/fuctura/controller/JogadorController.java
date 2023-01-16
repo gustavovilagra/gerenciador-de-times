@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -29,12 +31,13 @@ import br.com.fuctura.exception.ObjectExistsException;
 import br.com.fuctura.exception.ObjectNotFoundException;
 import br.com.fuctura.exception.RequiredParamException;
 import br.com.fuctura.service.JogadorService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-
+@Api(tags = {br.com.fuctura.config.SwaggerConfig.API_JOGADOR})
 @RestController
 @RequestMapping("/jogador")
 public class JogadorController {
@@ -69,7 +72,7 @@ public class JogadorController {
 		
 	
 	
-	@ApiOperation("listar jogadores com nome e seu imc")
+	@ApiOperation("listar jogadores com nome e seu valor do imc")
 	@ApiResponses({@ApiResponse(code = 200, message = "Requisiçao executada com sucesso")})
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<JogadorDTOView>> IndexNomeImcMsg(){
@@ -89,11 +92,23 @@ public class JogadorController {
 			@ApiResponse(code=400,message="petiçao incorreta")
 	})
 	@GetMapping(value="/{min}/{max}",produces=MediaType.APPLICATION_JSON_VALUE)
-	public List<JogadorJPQLDTO> jogadorJPQL(@PathVariable Double min,@PathVariable Double max){
-		return service.listarMinMax(min,max);
+	public @ResponseBody ResponseEntity <List<JogadorJPQLDTO>> jogadorJPQL(@PathVariable  @ApiParam(value = "peso minimo", required=true) Double min,
+			@PathVariable  @ApiParam(value = "peso maximo", required=true) Double max){
+			
+			List<JogadorJPQLDTO> resultado=this.service.listarMinMax(min, max);
+			if(resultado.isEmpty()) {
+				resultado=new ArrayList<>();
+				ResponseEntity.status(HttpStatus.OK).body(resultado);
+			}
+			return ResponseEntity.status(HttpStatus.OK).body(resultado);
 	}
 	
+	
+	
 	@ApiOperation("datos completos dos jogadores")
+	@ApiResponses(value= {
+			@ApiResponse(code=200,message="requisiçao executada com sucesso")
+	})
 	@GetMapping(value="/",produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<JogadorDTOInterface>> index(){
 		List<JogadorDTOInterface>jogadores=this.service.listarTodos();

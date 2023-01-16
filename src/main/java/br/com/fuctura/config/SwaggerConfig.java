@@ -8,11 +8,16 @@ import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
 @Configuration
 public class SwaggerConfig {
+	
+	public static final String API_JOGADOR="Jogadores";
+	public static final String API_TECNICO="Tecnicos";
+	public static final String API_TIME="Times";
 	
 	@Bean
 	public Docket productApi() {
@@ -24,7 +29,7 @@ public class SwaggerConfig {
 				.apiInfo(metaInfo());
 	}
 	private ApiInfo metaInfo() {
-		ApiInfo apiInfo=new ApiInfo("JAVA 3",
+		ApiInfo apiInfo=new ApiInfo("GERENCIADOR DE DATOS",
 				"API REST de Gerenciamento de Times de Futebol",
 				"1.0",
 				"Terms of Service",

@@ -14,8 +14,9 @@ import br.com.fuctura.dto.time.TimeDTOInterface;
 import br.com.fuctura.dto.time.TimeDTOInterface2;
 import br.com.fuctura.dto.time.TimeDTONome;
 import br.com.fuctura.service.TimeService;
-import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.annotations.Api;
 
+@Api(tags = {br.com.fuctura.config.SwaggerConfig.API_TIME})
 @RestController
 public class TimeController {
 	
@@ -23,24 +24,24 @@ public class TimeController {
 	@Autowired 
 	private TimeService service;
 	
-	@Operation(summary = "listar todos os times")
+	
 	@RequestMapping(path = "/time",method = RequestMethod.GET)
 	public List<TimeDTOInterface> listar() {
 		return service.times();
 		}
-	@Operation(summary = "listar os jogadores do time selecionado")
+	
 	@RequestMapping(path = "/time/jogadores/{id}",method = RequestMethod.GET)
 	public List<TimeDTOInterface2> listarJogadores(@PathVariable Long id) {
 		return service.jogadoresTimes(id);
 	}
-	@Operation(summary = "adicionar um time")
+	
 	@RequestMapping(path = "/time",method =RequestMethod.POST)
 	public void salvar(@Valid @RequestBody TimeDTONome time) {
 		
 		service.salvar(time);
 		
 	}
-	@Operation(summary = "deletar um time")
+	
 	@RequestMapping(path = "/time/{id}",method =RequestMethod.DELETE)
 	public void excluir(@PathVariable Long id) {
 		
@@ -48,7 +49,7 @@ public class TimeController {
 		
 	}
 
-	@Operation(summary = "atualizar nome")
+	
 	@RequestMapping(path = "/times/{nome}",method =RequestMethod.PUT )
 	public void atualizarNome(@PathVariable String nome,@RequestBody TimeDTONome t ) {
 		service.update(t, nome);

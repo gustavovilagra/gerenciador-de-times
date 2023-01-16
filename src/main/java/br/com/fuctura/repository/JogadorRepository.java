@@ -29,7 +29,7 @@ public interface JogadorRepository extends JpaRepository<Jogador, Long> {
 	
 	//public List<Jogador> findDistinctJogadorsByNome(String nome);
 	
-	@Query(value = "SELECT new br.com.fuctura.dto.JogadorJPQLDTO (J.nome,J.imc) FROM Jogador J WHERE peso BETWEEN :min AND :max ")
+	@Query(value = "SELECT new br.com.fuctura.dto.jogador.JogadorJPQLDTO (J.nome,J.imc) FROM Jogador J WHERE peso BETWEEN :min AND :max ")
 	public List<JogadorJPQLDTO> listarComJPQL(@Param(value = "min")Double minimo,@Param(value = "max")Double maximo);
 	
 	
