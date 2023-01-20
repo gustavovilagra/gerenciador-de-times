@@ -25,7 +25,7 @@ public interface JogadorService {
 	
 	public List<JogadorDTOInterface> listarTodos();
 	
-	public void deletarUsuario(String nome);
+	public void deletarUsuario(Long id)throws ObjectNotFoundException;
 	
 	public void update(JogadorDTO j,Long id) throws ObjectNotFoundException;
 	

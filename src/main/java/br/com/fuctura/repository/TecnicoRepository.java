@@ -13,7 +13,7 @@ import br.com.fuctura.entities.Tecnico;
 
 @Repository
 public interface TecnicoRepository extends JpaRepository<Tecnico, Long>{
-	public List<TecnicoDTOInterface>findTecnicoBy();
+	public List<TecnicoDTOInterface>findBy();
 	
 	public List<Tecnico>findByNome(String nome);
 	

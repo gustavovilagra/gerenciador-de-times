@@ -116,13 +116,15 @@ public class JogadorServiceImpl implements JogadorService {
 	}
 
 	@Override
-	public void deletarUsuario(String nome) {
-		if(this.isNumeric(nome)) {
-			throw new NomeInvalidoException();
-		}
-		LOGGER.info("jogador deletado com sucesso");
-		repo.deleteAll(repo.findJogadorsByNome(nome));
+	public void deletarUsuario(Long id) throws ObjectNotFoundException {
+		Optional<Jogador> jogador=this.repo.findById(id);
 		
+		if(jogador.isEmpty()) {
+			throw new ObjectNotFoundException("jogador nao encontrado");
+		}
+		
+		this.repo.delete(jogador.get());
+		LOGGER.info("jogador deletado com sucesso");
 	}
 
 	@Override

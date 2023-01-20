@@ -1,6 +1,6 @@
 package br.com.fuctura.entities;
 
-import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,13 +17,14 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import br.com.fuctura.dto.time.TimeDTO;
 import lombok.Data;
 @Data
 @Entity
 @Table(name = "tb_time")
-public class Time implements Serializable{
+public class Time {
 	
-	//private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy =GenerationType.AUTO)
 	@Column(name="not_id")
@@ -31,14 +32,19 @@ public class Time implements Serializable{
     
 	@Column(name="not_nome")
 	private String nome;
-	
+
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "time")
 	@JsonIgnore
 	private List<Jogador> jogadores=new ArrayList<>();
 	
 	@JsonIgnore
-	@JoinColumn(name="not_tecnico",nullable = false)
+	
 	@OneToOne(fetch = FetchType.LAZY,mappedBy = "time")
 	private Tecnico tecnico;
+	
+	
+	public TimeDTO toDto() {
+		return new TimeDTO(this);
+	}
 	
 }

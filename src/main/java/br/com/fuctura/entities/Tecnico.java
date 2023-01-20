@@ -1,7 +1,6 @@
 package br.com.fuctura.entities;
 
 
-import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,22 +11,29 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import br.com.fuctura.dto.tecnico.TecnicoDTO;
 import lombok.Data;
-@Data
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "tb_tecnico")
-public class Tecnico implements Serializable{
+public class Tecnico{
 	
-	//private static final long serialVersionUID = 1L;
-	@JsonIgnore
+	
+	
 	@Id
 	@GeneratedValue(strategy =GenerationType.AUTO)
 	@Column(name="tb_id")
-	private int id;
+	private Long id;
 	@Column(name="tb_nome")
 	private String nome;
 	@Column(name="tb_idade")
@@ -37,4 +43,9 @@ public class Tecnico implements Serializable{
 	@JsonIgnore
 	@OneToOne(fetch =FetchType.LAZY)
 	private Time time;
+	
+	public TecnicoDTO toDto() {
+		return new TecnicoDTO(this);
+	
+}
 }

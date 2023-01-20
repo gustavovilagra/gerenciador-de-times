@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -79,7 +78,7 @@ public class TimeController {
 			@ApiResponse(code=403,message="parametros errados ou ja exisitente ")
 	})
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<TimeDTONome> salvar(@Valid @RequestBody TimeDTONome time) {
+	public @ResponseBody ResponseEntity<TimeDTONome> store(@Valid @RequestBody TimeDTONome time) {
 		
 		try {
 			this.service.salvar(time);
@@ -92,22 +91,39 @@ public class TimeController {
 		}
 		
 	}
-	
+	@ApiOperation("excluir um time")
+	@ApiResponses(value= {
+			@ApiResponse(code=204,message="Solicitação atendida com sucesso sem corpo"),
+			@ApiResponse(code=400,message="erro no parametro")
+	})
 	@DeleteMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-	public void excluir(@PathVariable Long id) {
+	public @ResponseBody ResponseEntity<TimeDTO>  deletar(@PathVariable  @ApiParam(value = "Id do time", required=true) Long id) {
+			if(id==null) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			}
 		
-		service.deletar(id);
+			this.service.deletar(id);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		
+		
 		
 	}
 
-	
+	@ApiOperation("atualizar um time")
+	@ApiResponses(value= {
+			@ApiResponse(code=201,message="requisiçao atualizada com sucesso"),
+			@ApiResponse(code=400,message="erro na requisiçao"),
+			@ApiResponse(code=403,message="parametros errados ou ja existentes")
+	})
 	@PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<TimeDTONome> atualizarNome(@PathVariable Long id,@RequestBody TimeDTONome t ) {
+	public @ResponseBody ResponseEntity<TimeDTONome> update(@PathVariable @ApiParam(value = "Id do time", required=true) Long id,
+			@RequestBody @ApiParam(value = "nome do time", required=true) TimeDTONome t ) {
+		
 		try {
 			service.update(t,id);
-			return ResponseEntity.status(HttpStatus.OK).body(t);
+			return ResponseEntity.status(HttpStatus.CREATED).body(t);
 		} catch (ObjectNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
 }
 	

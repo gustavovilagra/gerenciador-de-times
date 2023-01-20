@@ -55,7 +55,6 @@ public class Jogador {
 	@ManyToOne(fetch =FetchType.LAZY)
 	private Time time;
 	
-	
 
 	
 	public JogadorDTO toDto() {

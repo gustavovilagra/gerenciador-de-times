@@ -12,6 +12,7 @@ import br.com.fuctura.dto.time.TimeDTOInterface;
 import br.com.fuctura.dto.time.TimeDTOInterface2;
 import br.com.fuctura.dto.time.TimeDTONome;
 import br.com.fuctura.entities.Time;
+import br.com.fuctura.exception.NomeInvalidoException;
 import br.com.fuctura.exception.ObjectExistsException;
 import br.com.fuctura.exception.ObjectNotFoundException;
 import br.com.fuctura.repository.TimeRepository;
@@ -47,9 +48,10 @@ public class TimeServiceImpl implements TimeService{
 
 	@Override
 	public void deletar(Long id) {
-		
-		timeRepo.deleteById(id);
-		
+		Optional<Time> resultado=this.timeRepo.findById(id);
+		if(resultado.isPresent()){
+			this.timeRepo.delete(resultado.get());
+		}
 	}
 	
 	
@@ -65,8 +67,11 @@ public class TimeServiceImpl implements TimeService{
 	@Override
 	public void update(TimeDTONome t,Long id) throws ObjectNotFoundException {
 		Optional<Time> time=this.timeRepo.findById(id);
-		if(time.isEmpty()) {
+		if(time.isEmpty()||id<=0||id==null) {
 			throw new ObjectNotFoundException("objeto vacio");
+		}
+		if(t.getNome().isBlank()||this.isExists(t.getNome())) {
+			throw new NomeInvalidoException();
 		}
 		time.get().setNome(t.getNome());
 		

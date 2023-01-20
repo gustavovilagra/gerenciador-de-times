@@ -38,7 +38,7 @@ public class InicializadorBancoDeDados implements CommandLineRunner{
 				.build();
 		
 		var resp=restTemplate.postForObject("http://localhost:8085/calculadora/imc",req,IMCJogadorDTO.class);
-		System.out.println(resp);
+		
 		jogador.setImc(resp.getImc());
 
 		if(jogador.getImc()>=30) {
@@ -58,31 +58,26 @@ public class InicializadorBancoDeDados implements CommandLineRunner{
 	
 	@Override
 	public void run(String... args) throws Exception {
-		Tecnico tecnicoM=new Tecnico();
-		tecnicoM.setNome("MARADONA");
-		tecnicoM.setIdade(48);
-		
-		
-		
-		Tecnico tecnicoF=new Tecnico();
-		tecnicoF.setNome("FABRICIO");
-		tecnicoF.setIdade(56);
-		
 		
 		
 		Time talleres=new Time();
 		talleres.setNome("Talleres");
 		
+		Tecnico tecnico1=new Tecnico();
+		tecnico1.setNome("Maradona");
+		tecnico1.setIdade(58);
+		tecnico1.setTime(talleres);
 		
-		tecnicoM.setTime(talleres);
 		
 		
 		
 		Time belgrano=new Time();
 		belgrano.setNome("belgrano");
 		
-		
-		tecnicoF.setTime(belgrano);
+		Tecnico tecnico2=new Tecnico();
+		tecnico2.setNome("mascherano");
+		tecnico2.setIdade(56);
+		tecnico2.setTime(belgrano);
 		
 		
 		Jogador j1=new Jogador();
@@ -150,8 +145,8 @@ public class InicializadorBancoDeDados implements CommandLineRunner{
 		jr.save(j5);
 		jr.save(j6);
 		
-		tecnoRepo.save(tecnicoM);
-		tecnoRepo.save(tecnicoF);
+		tecnoRepo.save(tecnico1);
+		tecnoRepo.save(tecnico2);
 		
 	}
 

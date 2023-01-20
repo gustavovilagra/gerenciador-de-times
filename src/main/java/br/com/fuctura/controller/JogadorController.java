@@ -127,12 +127,12 @@ public class JogadorController {
 			@ApiResponse(code=204,message="solicitude concluida"),
 			@ApiResponse(code= 400,message="erro na requeciçao")
 	})
-	@DeleteMapping(value="/{nome}",produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<JogadorDTO> deletar(@PathVariable String nome) {
-		if(nome==null) {
+	@DeleteMapping(value="/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<JogadorDTO> deletar(@PathVariable @ApiParam(value = "id do jogador", required=true)Long id) throws ObjectNotFoundException {
+		if(id==null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
-		this.service.deletarUsuario(nome);
+		this.service.deletarUsuario(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();		
 		
 	}
