@@ -38,9 +38,12 @@ public class Time {
 	private List<Jogador> jogadores=new ArrayList<>();
 	
 	@JsonIgnore
-	
 	@OneToOne(fetch = FetchType.LAZY,mappedBy = "time")
 	private Tecnico tecnico;
+	
+	@JsonIgnore
+	@OneToOne(fetch = FetchType.LAZY,mappedBy ="time")
+	private  Estadio estadio;
 	
 	
 	public TimeDTO toDto() {

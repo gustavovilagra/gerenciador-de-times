@@ -1,101 +1,47 @@
 package br.com.fuctura.entities;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import br.com.fuctura.dto.estadio.EstadioDto;
+import lombok.Data;
+
+@Data
+@Entity
+@Table(name="es_estadio")
 public class Estadio{
-		
-	private int id;
+	@Id
+	@GeneratedValue(strategy =GenerationType.AUTO)
+	@Column(name = "es_id")
+	private Long id;
+	@Column(name ="es_nome") 
 	private String nome;
+	@Column(name = "es_apelido")
 	private String apelido;
+	@Column(name = "es_dtContruçao")
 	private LocalDate dtContrucao;
+	@Column(name = "es_dtInaguraçao")
 	private LocalDate dtInaguracao;
+	@Column(name = "es_capasidade")
 	private int capacidade;
 	
-	public Estadio() {
-		
-	}
-
-	public Estadio(int id, String nome, String apelido, LocalDate dtContrucao, LocalDate dtInaguracao, int capacidade) {
-		super();
-		this.id = id;
-		this.nome = nome;
-		this.apelido = apelido;
-		this.dtContrucao = dtContrucao;
-		this.dtInaguracao = dtInaguracao;
-		this.capacidade = capacidade;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getApelido() {
-		return apelido;
-	}
-
-	public void setApelido(String apelido) {
-		this.apelido = apelido;
-	}
-
-	public LocalDate getDtContrucao() {
-		return dtContrucao;
-	}
-
-	public void setDtContrucao(LocalDate dtContrucao) {
-		this.dtContrucao = dtContrucao;
-	}
-
-	public LocalDate getDtInaguracao() {
-		return dtInaguracao;
-	}
-
-	public void setDtInaguracao(LocalDate dtInaguracao) {
-		this.dtInaguracao = dtInaguracao;
-	}
-
-	public int getCapacidade() {
-		return capacidade;
-	}
-
-	public void setCapacidade(int capacidade) {
-		this.capacidade = capacidade;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(apelido);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Estadio other = (Estadio) obj;
-		return Objects.equals(apelido, other.apelido);
-	}
-
-	@Override
-	public String toString() {
-		return "Estadio [id=" + id + ", nome=" + nome + ", apelido=" + apelido + ", dtContrucao=" + dtContrucao
-				+ ", dtInaguracao=" + dtInaguracao + ", capacidade=" + capacidade + "]";
-	}
+	@JoinColumn(name="es_time",nullable =false )
+	@JsonIgnore
+	@OneToOne(fetch =FetchType.EAGER)
+	private Time time;
 	
+	public EstadioDto dto() {
+		return new EstadioDto(this);
+	}
 }

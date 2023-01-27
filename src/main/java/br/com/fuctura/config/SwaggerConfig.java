@@ -18,6 +18,7 @@ public class SwaggerConfig {
 	public static final String API_JOGADOR="Jogadores";
 	public static final String API_TECNICO="Tecnicos";
 	public static final String API_TIME="Times";
+	public static final String API_ESTADIO="Estadio";
 	
 	@Bean
 	public Docket productApi() {

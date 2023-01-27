@@ -1,6 +1,9 @@
 package br.com.fuctura.config;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -9,9 +12,11 @@ import org.springframework.web.client.RestTemplate;
 
 import br.com.fuctura.dto.jogador.IMCJogadorDTO;
 import br.com.fuctura.dto.jogador.IMCrequerimentoDTO;
+import br.com.fuctura.entities.Estadio;
 import br.com.fuctura.entities.Jogador;
 import br.com.fuctura.entities.Tecnico;
 import br.com.fuctura.entities.Time;
+import br.com.fuctura.repository.EstadioRepository;
 import br.com.fuctura.repository.JogadorRepository;
 import br.com.fuctura.repository.TecnicoRepository;
 import br.com.fuctura.repository.TimeRepository;
@@ -28,6 +33,9 @@ public class InicializadorBancoDeDados implements CommandLineRunner{
 	
 	@Autowired
 	private TecnicoRepository tecnoRepo;
+	
+	@Autowired
+	private EstadioRepository esRepo;
 	
 
 	
@@ -74,10 +82,27 @@ public class InicializadorBancoDeDados implements CommandLineRunner{
 		Time belgrano=new Time();
 		belgrano.setNome("belgrano");
 		
+	
+		
 		Tecnico tecnico2=new Tecnico();
 		tecnico2.setNome("mascherano");
 		tecnico2.setIdade(56);
 		tecnico2.setTime(belgrano);
+		
+		
+		LocalDate localDateC = LocalDate. of(2016, 8, 19);
+		LocalDate localdateI=LocalDate.of(2022, 12, 01);
+		
+		
+		Estadio estadio=new Estadio();
+		estadio.setNome("estadio mario alberto kempes");
+		estadio.setApelido("albiazul");
+		estadio.setDtContrucao(localDateC);
+		estadio.setDtInaguracao(localdateI);
+		estadio.setCapacidade(20000);
+		estadio.setTime(belgrano);
+	
+		
 		
 		
 		Jogador j1=new Jogador();
@@ -147,6 +172,10 @@ public class InicializadorBancoDeDados implements CommandLineRunner{
 		
 		tecnoRepo.save(tecnico1);
 		tecnoRepo.save(tecnico2);
+		
+		this.esRepo.save(estadio);
+		
+		
 		
 	}
 
