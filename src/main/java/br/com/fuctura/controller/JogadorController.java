@@ -24,10 +24,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.fuctura.dto.jogador.JogadorCreated;
 import br.com.fuctura.dto.jogador.JogadorDTO;
 import br.com.fuctura.dto.jogador.JogadorDTOInterface;
 import br.com.fuctura.dto.jogador.JogadorDTOView;
 import br.com.fuctura.dto.jogador.JogadorJPQLDTO;
+import br.com.fuctura.entities.Jogador;
 import br.com.fuctura.exception.ObjectExistsException;
 import br.com.fuctura.exception.ObjectNotFoundException;
 import br.com.fuctura.exception.RequiredParamException;
@@ -56,13 +58,12 @@ public class JogadorController {
 	
 	@PostMapping(produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<JogadorDTO>  store(
-			@Valid @RequestBody  @ApiParam(value = "Objeto a ser criado id,imc e mensagem podem ser ignorado ", required=true) JogadorDTO dto) {
-		
-		
+			@Valid @RequestBody  @ApiParam(value = "Campo Time = deve colocar o \"Id\" do Time", required=true) JogadorCreated dto) throws ObjectNotFoundException {
+				
 		try {
 			this.service.checkJogador(dto);
-			this.service.generateJogador(dto);
-			return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+			Jogador jogador=this.service.generateJogador(dto);
+			return ResponseEntity.status(HttpStatus.CREATED).body(jogador.toDto());
 			
 		}catch(RequiredParamException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -158,12 +159,12 @@ public class JogadorController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jogador);
 		}
 		try {
-			this.service.checkJogador(jogador);
+			//this.service.checkJogador(jogador);
 			
 			this.service.update(jogador, id);
 			return ResponseEntity.status(HttpStatus.CREATED).body(jogador);
 			
-		}catch(RequiredParamException | ObjectNotFoundException e) {
+		}catch(/*RequiredParamException |*/ ObjectNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jogador);
 			
 		}

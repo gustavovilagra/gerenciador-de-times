@@ -1,37 +1,29 @@
 package br.com.fuctura.dto.jogador;
 
-
-
 import br.com.fuctura.entities.Jogador;
-import br.com.fuctura.entities.Time;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+import lombok.Getter;
+import lombok.Setter;
 @Getter
 @Setter
-@NoArgsConstructor
-public class JogadorDTO {
-	private Long id;
+public class JogadorCreated {
+	
 	private String nome;
 	private int idade;
 	private Double peso;
 	private Double altura;
-	private Double imc;
-	private String mensagem;
-	private Time time;
+	private Long time;
 
+	public JogadorCreated() {}
 	
-	public JogadorDTO(Jogador jogador) {
+	public JogadorCreated(Jogador jogador) {
 		if(null !=jogador) {
-			this.id=jogador.getId();
 			this.nome=jogador.getNome();
 			this.idade=jogador.getIdade();
 			this.peso=jogador.getPeso();
 			this.altura=jogador.getAltura();
-			this.imc=jogador.getImc();
-			this.mensagem=jogador.getMensagem();
-			this.time=jogador.getTime();
+			this.time=jogador.getTime().getId();
 		}
 	}
+
 }

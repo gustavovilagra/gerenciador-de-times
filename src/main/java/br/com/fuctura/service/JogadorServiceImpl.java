@@ -11,11 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.fuctura.dto.jogador.IMCrequerimentoDTO;
+import br.com.fuctura.dto.jogador.JogadorCreated;
 import br.com.fuctura.dto.jogador.JogadorDTO;
 import br.com.fuctura.dto.jogador.JogadorDTOInterface;
 import br.com.fuctura.dto.jogador.JogadorDTOView;
 import br.com.fuctura.dto.jogador.JogadorJPQLDTO;
 import br.com.fuctura.entities.Jogador;
+import br.com.fuctura.entities.Time;
 import br.com.fuctura.exception.IdadeInvalidoException;
 import br.com.fuctura.exception.NomeInvalidoException;
 import br.com.fuctura.exception.ObjectExistsException;
@@ -23,6 +25,7 @@ import br.com.fuctura.exception.ObjectNotFoundException;
 import br.com.fuctura.exception.PesoInvalidoException;
 import br.com.fuctura.exception.RequiredParamException;
 import br.com.fuctura.repository.JogadorRepository;
+import br.com.fuctura.repository.TimeRepository;
 
 
 
@@ -30,6 +33,9 @@ import br.com.fuctura.repository.JogadorRepository;
 @Service("ServiceIMPL")
 public class JogadorServiceImpl implements JogadorService {
 	public static final Logger LOGGER=LoggerFactory.getLogger(JogadorServiceImpl.class);
+	
+	@Autowired
+	private TimeRepository timeRepo;
 	
 	@Autowired
 	private JogadorRepository repo;
@@ -47,7 +53,7 @@ public class JogadorServiceImpl implements JogadorService {
 	
 	@Override
 	//mapper manual
-	public void generateJogador(JogadorDTO j) throws ObjectExistsException {
+	public Jogador generateJogador(JogadorCreated j) throws ObjectExistsException, ObjectNotFoundException {
 		
 		var req=IMCrequerimentoDTO.builder()
 				.peso(j.getPeso())
@@ -57,13 +63,19 @@ public class JogadorServiceImpl implements JogadorService {
 		var respo=calculadora.calculandoIMC(req);
 		
 		var jogador=new Jogador();
+		
 		jogador.setNome(j.getNome());
 		jogador.setIdade(j.getIdade());
 		jogador.setPeso(j.getPeso());
 		jogador.setAltura(j.getAltura());
 		jogador.setImc(respo.getImc());
-		jogador.setTime(j.getTime());
 		
+		Optional<Time> time=timeRepo.findById(j.getTime());
+		if(time.isPresent()) {
+			jogador.setTime(time.get());;
+		}else {
+			throw new ObjectNotFoundException("time não encontrado");
+		}
 		if(jogador.getImc()>=30) {
 			jogador.setMensagem("jogador com obesidade");
 		}
@@ -94,8 +106,9 @@ public class JogadorServiceImpl implements JogadorService {
 
 		
 		LOGGER.info("jogador criado com sucesso");
-		 repo.save(jogador);
+		repo.save(jogador);
 		
+		return jogador;
 	
 	}
 	
@@ -192,7 +205,7 @@ public class JogadorServiceImpl implements JogadorService {
 		
 	}
 	@Override
-	public void checkJogador(JogadorDTO j) throws RequiredParamException{
+	public void checkJogador(JogadorCreated j) throws RequiredParamException{
 		
 		if(null==j.getNome()) {
 			throw new RequiredParamException("precisa colocar o nome do jogador");

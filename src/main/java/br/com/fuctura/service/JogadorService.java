@@ -5,6 +5,7 @@ package br.com.fuctura.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+import br.com.fuctura.dto.jogador.JogadorCreated;
 import br.com.fuctura.dto.jogador.JogadorDTO;
 import br.com.fuctura.dto.jogador.JogadorDTOInterface;
 import br.com.fuctura.dto.jogador.JogadorDTOView;
@@ -17,7 +18,7 @@ import br.com.fuctura.exception.RequiredParamException;
 @Service
 public interface JogadorService {
 	
-	public void generateJogador(JogadorDTO j)throws ObjectExistsException;
+	public Jogador generateJogador(JogadorCreated j)throws ObjectExistsException, ObjectNotFoundException;
 	
 	public List<JogadorDTOView> listarNomeImc();
 	
@@ -29,7 +30,7 @@ public interface JogadorService {
 	
 	public void update(JogadorDTO j,Long id) throws ObjectNotFoundException;
 	
-	public void checkJogador(JogadorDTO j)throws RequiredParamException;
+	public void checkJogador(JogadorCreated j)throws RequiredParamException;
 	
 	public boolean isExists(Jogador j);
 	

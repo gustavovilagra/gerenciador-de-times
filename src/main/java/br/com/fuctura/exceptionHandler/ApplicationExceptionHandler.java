@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import br.com.fuctura.dto.jogador.ErroNaApiDTO;
 import br.com.fuctura.exception.IdadeInvalidoException;
 import br.com.fuctura.exception.NomeInvalidoException;
+import br.com.fuctura.exception.ObjectNotFoundException;
 import br.com.fuctura.exception.PesoInvalidoException;
 
 
@@ -45,6 +46,13 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler{
 		
 	@ExceptionHandler(IdadeInvalidoException.class)
 	public ResponseEntity<ErroNaApiDTO> idadeInvalido(IdadeInvalidoException ex){//throw new NomeInvalidoException();
+		
+		var mns=new ErroNaApiDTO(HttpStatus.BAD_REQUEST,LocalDateTime.now(),"erro de leitura na idade ");
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mns);
+		
+	}
+	@ExceptionHandler(ObjectNotFoundException.class)
+	public ResponseEntity<ErroNaApiDTO> objetoNaoEncontrado(ObjectNotFoundException ex){//throw new NomeInvalidoException();
 		
 		var mns=new ErroNaApiDTO(HttpStatus.BAD_REQUEST,LocalDateTime.now(),"erro de leitura na idade ");
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mns);

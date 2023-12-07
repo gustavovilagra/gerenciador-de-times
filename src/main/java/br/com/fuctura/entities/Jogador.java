@@ -16,6 +16,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import br.com.fuctura.dto.jogador.JogadorCreated;
 import br.com.fuctura.dto.jogador.JogadorDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -61,6 +62,7 @@ public class Jogador {
 		return new JogadorDTO(this);
 		
 	}
+
 	
 
 }
