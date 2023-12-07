@@ -25,7 +25,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name="tb_jogador")
+@Table(name="jogador")
 public class Jogador {
 	
 	
@@ -33,24 +33,24 @@ public class Jogador {
 	@JsonIgnore
 	@Id
 	@GeneratedValue(strategy =GenerationType.AUTO)
-	@Column(name ="not_id")
+	@Column(name ="id")
 	private Long id;
-	@Column(name = "not_nome",unique = true)
+	@Column(name = "nome",unique = true)
 	private String nome;
-	@Column(name = "not_idade")
+	@Column(name = "idade")
 	private int idade;
-	@Column(name = "not_peso")
+	@Column(name = "peso")
 	private Double peso;
 	@Column(name= "not_altura")
 	private Double altura;
 
-	@Column(name="not_imc")
+	@Column(name="imc")
 	private Double imc;
 
-	@Column(name = "not_mensagem")
+	@Column(name = "mensagem")
 	private String mensagem;
 	
-	@JoinColumn(name="not_time",nullable = false)
+	@JoinColumn(name="time",nullable = false)
 	@JsonIgnore
 	@ManyToOne(fetch =FetchType.LAZY)
 	private Time time;

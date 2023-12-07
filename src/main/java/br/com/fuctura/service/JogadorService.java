@@ -33,6 +33,8 @@ public interface JogadorService {
 	
 	public boolean isExists(Jogador j);
 	
+	public boolean isExistId(Long id);
+	
 	
 
 	

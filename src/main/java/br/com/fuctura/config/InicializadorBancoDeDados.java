@@ -1,15 +1,11 @@
 package br.com.fuctura.config;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Arrays;
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
 import br.com.fuctura.dto.jogador.IMCJogadorDTO;
 import br.com.fuctura.dto.jogador.IMCrequerimentoDTO;
 import br.com.fuctura.entities.Estadio;

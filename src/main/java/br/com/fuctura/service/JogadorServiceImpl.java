@@ -214,6 +214,17 @@ public class JogadorServiceImpl implements JogadorService {
 	return !this.repo.findJogadorByNome(j.getNome()).isEmpty();
 	}
 
+
+
+	@Override
+	public boolean isExistId(Long id) {
+		Optional<Jogador>resultado=this.repo.findById(id);
+		if(resultado.isEmpty()) {
+			return false;
+		}
+		return true;
+	}
+
 	
 	
 	

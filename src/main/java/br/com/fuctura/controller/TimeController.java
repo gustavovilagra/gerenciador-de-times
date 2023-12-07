@@ -43,14 +43,15 @@ public class TimeController {
 	
 	@ApiOperation("lista dos times existente")
 	@ApiResponses(value= {
-			@ApiResponse(code=200,message="requisiçao executada com sucesso")
+			@ApiResponse(code=200,message="requisiçao executada com sucesso"),
+			@ApiResponse(code=204,message="sem conteudo")
 	})
 	@GetMapping(value="/",produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<TimeDTOInterface>> index() {
 		List<TimeDTOInterface> resultado=this.service.times();
 		if(resultado.isEmpty()) {
 			resultado=new ArrayList<>();
-			return ResponseEntity.status(HttpStatus.OK).body(resultado); 
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); 
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(resultado);
 		}
@@ -59,15 +60,16 @@ public class TimeController {
 	@ApiOperation("datos completos dos jogadores do time selecionado")
 	@ApiResponses(value= {
 			@ApiResponse(code=200,message="requisiçao executada com sucesso"),
-			@ApiResponse(code=404,message="requisiçao nao encontrada ou inexistente")
+			@ApiResponse(code=204,message="sem conteudo")
 	})
 	@GetMapping(value="/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<List<TimeDTOInterface2>> listarJogadores(@PathVariable 
+	public @ResponseBody ResponseEntity<List<TimeDTOInterface2>> indexJogTime(@PathVariable 
 			@ApiParam(value="id do time",required=true)Long id) {
-		List<TimeDTOInterface2> resultado=this.service.jogadoresTimes(id);
 		
-		if(resultado.isEmpty()||null==id) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		List<TimeDTOInterface2> resultado=this.service.jogadoresTimes(id);
+		 if(resultado.isEmpty()) {
+			resultado=new ArrayList<>();
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
 		
 		return ResponseEntity.status(HttpStatus.OK).body(resultado);
@@ -85,7 +87,7 @@ public class TimeController {
 			
 			return ResponseEntity.status(HttpStatus.CREATED).body(time);
 		} catch (ObjectExistsException e) {
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(time);
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 			
 
 		}

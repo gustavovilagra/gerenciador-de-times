@@ -19,25 +19,24 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name="es_estadio")
+@Table(name="estadio")
 public class Estadio{
 	@Id
 	@GeneratedValue(strategy =GenerationType.AUTO)
-	@Column(name = "es_id")
+	@Column(name = "id")
 	private Long id;
-	@Column(name ="es_nome") 
+	@Column(name ="nome") 
 	private String nome;
-	@Column(name = "es_apelido")
+	@Column(name = "apelido")
 	private String apelido;
-	@Column(name = "es_dtContruçao")
+	@Column(name = "dtContruçao")
 	private LocalDate dtContrucao;
-	@Column(name = "es_dtInaguraçao")
+	@Column(name = "dtInaguraçao")
 	private LocalDate dtInaguracao;
-	@Column(name = "es_capasidade")
+	@Column(name = "capacidade")
 	private int capacidade;
 	
-	@JoinColumn(name="es_time",nullable =false )
-	@JsonIgnore
+	@JoinColumn(name="time" )
 	@OneToOne(fetch =FetchType.EAGER)
 	private Time time;
 	

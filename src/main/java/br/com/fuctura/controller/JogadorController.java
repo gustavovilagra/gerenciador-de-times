@@ -4,6 +4,7 @@ package br.com.fuctura.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -73,13 +74,14 @@ public class JogadorController {
 	
 	
 	@ApiOperation("listar jogadores com nome e seu valor do imc")
-	@ApiResponses({@ApiResponse(code = 200, message = "Requisiçao executada com sucesso")})
+	@ApiResponses({@ApiResponse(code = 200, message = "Requisiçao executada com sucesso"),
+					@ApiResponse(code= 204, message = "sem conteudo")})
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<JogadorDTOView>> IndexNomeImcMsg(){
 		List<JogadorDTOView> jogadores=this.service.listarNomeImc();
 		if(jogadores.isEmpty()) {
-			List<JogadorDTOView>jogadoresView=new ArrayList<>();
-			return ResponseEntity.status(HttpStatus.OK).body(jogadoresView);
+			jogadores=new ArrayList<>();
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(jogadores);
 		
@@ -89,32 +91,33 @@ public class JogadorController {
 	@ApiOperation("listar por peso")
 	@ApiResponses(value= {
 			@ApiResponse(code=200,message="requisiçao executada com sucesso"),
+			@ApiResponse(code= 204,message="sem conteudo"),
 			@ApiResponse(code=400,message="petiçao incorreta")
 	})
 	@GetMapping(value="/{min}/{max}",produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity <List<JogadorJPQLDTO>> indexJPQL(@PathVariable  @ApiParam(value = "peso minimo", required=true) Double min,
 			@PathVariable  @ApiParam(value = "peso maximo", required=true) Double max){
 			
-			List<JogadorJPQLDTO> resultado=this.service.listarMinMax(min, max);
-			if(resultado.isEmpty()) {
-				resultado=new ArrayList<>();
-				ResponseEntity.status(HttpStatus.OK).body(resultado);
-			}
-			return ResponseEntity.status(HttpStatus.OK).body(resultado);
+		List<JogadorJPQLDTO> resultado = this.service.listarMinMax(min, max);
+		if(resultado.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		}
+		
+		return ResponseEntity.ok(resultado);
 	}
-	
 	
 	
 	@ApiOperation("datos completos dos jogadores")
 	@ApiResponses(value= {
-			@ApiResponse(code=200,message="requisiçao executada com sucesso")
+			@ApiResponse(code=200,message="requisiçao executada com sucesso"),
+			@ApiResponse(code= 204,message="sem conteudo")
 	})
 	@GetMapping(value="/",produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<JogadorDTOInterface>> index(){
 		List<JogadorDTOInterface>jogadores=this.service.listarTodos();
 		if(jogadores.isEmpty()) {
 			jogadores=new ArrayList<>();
-			return ResponseEntity.status(HttpStatus.OK).body(jogadores);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
 		
 		 return ResponseEntity.status(HttpStatus.OK).body(jogadores);
@@ -124,12 +127,13 @@ public class JogadorController {
 	
 	@ApiOperation("deletar todos os nomes indicado")
 	@ApiResponses(value= {
-			@ApiResponse(code=204,message="solicitude concluida"),
+			@ApiResponse(code=204,message="solicitude concluida sem conteudo"),
 			@ApiResponse(code= 400,message="erro na requeciçao")
 	})
 	@DeleteMapping(value="/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<JogadorDTO> deletar(@PathVariable @ApiParam(value = "id do jogador", required=true)Long id) throws ObjectNotFoundException {
-		if(id==null) {
+		Boolean verificarId=this.service.isExistId(id);
+		if(!verificarId) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
 		this.service.deletarUsuario(id);
@@ -150,7 +154,7 @@ public class JogadorController {
 			@PathVariable @ApiParam(value="id do jogador",required=true) Long id,
 			@RequestBody @ApiParam(value="Objeto a ser atualizado imc e mensagem podem ser ignorados", required=true) JogadorDTO jogador) {
 		
-		if(null==id || jogador.getId() !=id) {
+		if(jogador.getId() !=id) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jogador);
 		}
 		try {

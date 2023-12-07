@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fuctura.config.SwaggerConfig;
 import br.com.fuctura.dto.estadio.EstadioDto;
+import br.com.fuctura.entities.Estadio;
 import br.com.fuctura.exception.ObjectExistsException;
 import br.com.fuctura.exception.ObjectNotExistsException;
 import br.com.fuctura.exception.ObjectNotFoundException;
@@ -42,10 +42,7 @@ public class EstadioContoller {
 	
 	@ApiOperation("Salvar um estadio")
 	@ApiResponses({@ApiResponse(code = 201, message = "Requisiçao salva executada com sucesso"),
-		@ApiResponse(code = 400,message = "erro na requisiçao"),
-	    @ApiResponse(code = 401, message = "Acesso negado"),
 	    @ApiResponse(code=403,message="parametros errados ou ja existente")})
-	
 	
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<EstadioDto> store(@RequestBody @ApiParam(name="estadio",required = true) EstadioDto estadio){
@@ -61,14 +58,16 @@ public class EstadioContoller {
 	}
 
 	@ApiOperation("Listar estadios")
-	@ApiResponses({@ApiResponse(code = 200, message = "Requisiçao executada com sucesso")})
+	@ApiResponses({@ApiResponse(code = 200, message = "Requisiçao executada com sucesso"),
+					@ApiResponse(code=204, message = "sem conteudo")})
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<EstadioDto>> index(){
 		
 		List<EstadioDto> resposta=this.esService.listar();
+		
 		if(resposta.isEmpty()) {
 			resposta=new ArrayList<>();
-			return ResponseEntity.status(HttpStatus.OK).body(resposta);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(resposta);
 	}
@@ -97,10 +96,9 @@ public class EstadioContoller {
 	public @ResponseBody ResponseEntity<EstadioDto>update(@PathVariable @ApiParam(value="id do estadio",required = true) Long id,
 			@RequestBody  @ApiParam(value="atualizar estadio",required = true) EstadioDto dto){
 		try {
-			if(null==id||dto.getId()!=id) {
+			if(dto.getId()!=id) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 			}
-			
 			this.esService.atualizar(id, dto);
 			return ResponseEntity.status(HttpStatus.CREATED).body(dto);
 		} catch (ObjectNotExistsException e) {

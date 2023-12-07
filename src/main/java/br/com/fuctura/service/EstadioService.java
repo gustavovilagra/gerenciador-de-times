@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.fuctura.dto.estadio.EstadioDto;
 import br.com.fuctura.entities.Estadio;
@@ -25,7 +26,7 @@ public class EstadioService {
 	private TimeRepository timeRepo;
 	
 	
-	
+	@Transactional(rollbackFor = Exception.class)
 	public void salvar(EstadioDto es) throws ObjectNotExistsException, ObjectExistsException {
 		
 		Estadio estadio=new Estadio();
@@ -47,11 +48,11 @@ public class EstadioService {
 		estadio.setTime(es.getTime());
 		this.repo.save(estadio);
 	}
-	
+	@Transactional(readOnly = true)
 	public List<EstadioDto> listar(){
 		return this.repo.findBy();
 	}
-	
+	@Transactional
 	public void excluir(Long id) throws ObjectNotFoundException {
 		Optional<Estadio>resultado=this.repo.findById(id);
 		if(resultado.isEmpty()) {
@@ -59,7 +60,7 @@ public class EstadioService {
 		}
 		this.repo.delete(resultado.get());
 	}
-	
+	@Transactional(rollbackFor = Exception.class)
 	public void atualizar(Long id,EstadioDto dto) throws ObjectNotExistsException {
 		Optional<Estadio> resultado=this.repo.findById(id);
 		

@@ -16,7 +16,6 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.fuctura.dto.tecnico.TecnicoDTO;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,21 +24,21 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "tb_tecnico")
+@Table(name = "tecnico")
 public class Tecnico{
 	
 	
 	
 	@Id
 	@GeneratedValue(strategy =GenerationType.AUTO)
-	@Column(name="tb_id")
+	@Column(name="id")
 	private Long id;
-	@Column(name="tb_nome")
+	@Column(name="nome")
 	private String nome;
-	@Column(name="tb_idade")
+	@Column(name="idade")
 	private int idade;
 	
-	@JoinColumn(name="tb_time",nullable =false )
+	@JoinColumn(name="time" )
 	@JsonIgnore
 	@OneToOne(fetch =FetchType.LAZY)
 	private Time time;

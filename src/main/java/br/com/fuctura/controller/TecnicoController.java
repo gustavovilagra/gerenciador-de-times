@@ -57,13 +57,17 @@ public class TecnicoController {
 		
 		
 	}
-	
+	@ApiOperation("datos completos dos tecnicos do time selecionado")
+	@ApiResponses(value= {
+			@ApiResponse(code=200,message="requisiçao executada com sucesso"),
+			@ApiResponse(code=204,message="sem conteudo")
+	})
 	@GetMapping
 	public @ResponseBody ResponseEntity<List<TecnicoDTOInterface>> listarTecnicos(){
 		List<TecnicoDTOInterface> resposta=this.tecServ.listarTecnicosETime();
 		if(resposta.isEmpty()) {
 			resposta=new ArrayList<>();
-			return ResponseEntity.status(HttpStatus.OK).body(resposta);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
 		
 		return ResponseEntity.status(HttpStatus.OK).body(resposta);
